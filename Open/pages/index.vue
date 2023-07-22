@@ -111,10 +111,25 @@ const openModule = namespace("open");
     },
     head () {
         return {
-            title: "Corsace Open",
+            title: this.$store.state["open"].title,
+            meta: [
+                {hid: "og:site_name", property: "og:site_name", content: this.$store.state["open"].title}, 
+                {hid: "og:title", property: "og:title", content: this.$store.state["open"].title}, 
+
+
+                {hid: "twitter:title",property: "twitter:title", content: this.$store.state["open"].title},
+                {hid: "twitter:image:alt",property: "twitter:image:alt", content: this.$store.state["open"].title},
+                
+                {hid: "description", property: "description", content: "Corsace Open is one of the largest 4v4 tournaments in osu! Hailing great competition and entertaining matches."},
+                
+            ],
+            link: [{rel: "canonical", hid: "canonical", href: "https://open.corsace.io"}],
         };
+        
     },
 })
+
+
 export default class Default extends Vue {
 
     options: Intl.DateTimeFormatOptions = {
