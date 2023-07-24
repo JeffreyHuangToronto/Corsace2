@@ -69,6 +69,7 @@ export const mutations: MutationTree<OpenState> = {
                         })),
                     })),
                 })),
+                description: tournament.description,
             };
 
             state.tournament.stages.sort((a, b) => a.order - b.order);

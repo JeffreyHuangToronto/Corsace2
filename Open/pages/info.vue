@@ -281,23 +281,22 @@ enum StageStatus {
         return {
             title: this.$store.state["open"].title,
             meta: [
-                {hid: "og:site_name", property: "og:site_name", content: `Corsace Open - ${this.$store.state["open"].tournament.year}`}, 
-                {hid: "og:title", property: "og:title", content: `Corsace Open - ${this.$store.state["open"].tournament.year}`}, 
-                {hid: "og:url", property: "og:url", content: "https://open.corsace.io"}, 
-                {hid: "og:type", property: "og:type", content: "website"},                 
-                {hid: "og:description", property: "og:description", content: "Corsace Open is one of the largest 4v4 tournaments in osu! Hailing great competition and entertaining matches."},
-                {hid: "og:locale",property: "og:locale", content: "en_US"},
-                {hid: "og:image",property: "og:image", content: "/_nuxt/_/Assets/img/site/open/banner.png"},
-                {hid: "og:image:width",property: "og:image:width", content: "547"},
-                {hid: "og:image:height",property: "og:image:height", content: "223"},
-                {hid: "og:image:type",property: "og:image:type", content: "image/png"},
-                {hid: "og:image:alt",property: "og:image:alt", content: "Corsace Open"},
+                {hid: "description", name: "description", content: this.$store.state["open"].tournament.description},
 
-                {hid: "twitter:title",property: "twitter:title", content: `Corsace Open - ${this.$store.state["open"].tournament.year} ${this.$store.state["open"].site}`},
-                {hid: "twitter:image:alt",property: "twitter:image:alt", content: `Corsace Open - ${this.$store.state["open"].tournament.year} ${this.$store.state["open"].site}`},
-    
+                {hid: "og:site_name", property: "og:site_name", content: this.$store.state["open"].title},
+                {hid: "og:title", property: "og:title", content: this.$store.state["open"].title},
+                {hid: "og:url", property: "og:url", content: this.$route.path}, 
+                {hid: "og:description", property: "og:description", content: this.$store.state["open"].tournament.description},
+                {hid: "og:image",property: "og:image", content: require("../../Assets/img/site/open/banner.png")},
+                
+                {name: "twitter:title", content: this.$store.state["open"].title},
+                {name: "twitter:description", content: this.$store.state["open"].tournament.description},
+                {name: "twitter:image", content: require("../../Assets/img/site/open/banner.png")},
+                {name: "twitter:image:src", content: require("../../Assets/img/site/open/banner.png")},
+                
+                
             ],
-            link: [{rel: "canonical", hid: "canonical", href: "https://open.corsace.io/info"}],
+            link: [{rel: "canonical", hid: "canonical", href: `https://open.corsace.io${this.$route.path}`}],
         };
     },
 })
