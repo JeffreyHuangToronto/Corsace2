@@ -4,18 +4,46 @@
             <OpenTitle>
                 {{ $t('open.mappool.title') }}
                 <template #buttons>
-                    <StageSelector>
+                    <!-- <StageSelector>
                         <template #top_text>
                             STAGE
                         </template>
                         <template #bottom_text>
                             SELECT
                         </template>
-
-                        <template #stage>
-                            QL
+                        <template #left_button>
+                            <div @click.native="selectedStage = 1" />
                         </template>
-                    </StageSelector>
+                        <template #stage>
+                            {{ stage.abbreviation }}
+                        </template>
+                        <template #right_button>
+                            <div @click.native="selectedStage = 2" />
+                        </template>
+                    </StageSelector> -->
+                    <div class="stage_selector">
+                        <div class="stage_selector__text">
+                            <span>
+                                STAGE
+                            </span>
+                            <span>
+                                SELECT
+                            </span>
+                        </div>
+                        <div class="stage_selector_buttons">
+                            <div
+                                class="stage_selector_buttons__left"
+                                @click="selectedStage = selectedStage - 1"
+                            />
+                            <div class="stage_selector_buttons__selected">
+                                {{ stage?.abbreviation }}
+                            </div>
+                            <a
+                                class="stage_selector_buttons__right"
+                                @click="selectedStage = selectedStage + 1"
+                            />
+                        </div>
+                    </div>
                     <!-- TODO: NOT MAKE THIS A STATIC LINK LOL -->
                     <a 
                         href="https://docs.google.com/spreadsheets/d/1Bl-G_jKyxxMrTtgEJ6j2uYnHtDoPz8uG_flSKWkc734/edit#gid=2089223782"
@@ -30,7 +58,7 @@
                         >
                     </a>
                     <a
-                        :href="qualifiersStage?.mappool?.[0].mappackLink || ''"
+                        :href="stage?.mappool?.[0].mappackLink || ''"
                         class="qualifiers__button"
                     >
                         <div class="qualifiers__button_text">
@@ -44,15 +72,15 @@
                 </template>
             </OpenTitle>
             <MappoolView
-                v-if="qualifiersStage?.mappool?.[0].isPublic"
-                :pool="qualifiersStage.mappool[0]"
+                v-if="stage?.mappool?.[0].isPublic"
+                :pool="stage.mappool[0]"
             />
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component} from "vue-property-decorator";
+import { Vue, Component, Watch} from "vue-property-decorator";
 import { namespace } from "vuex-class";
 
 import MappoolView from "../../Assets/components/open/MappoolView.vue";
@@ -95,8 +123,53 @@ export default class Mappool extends Vue {
 
     @openModule.State tournament!: Tournament | null;
 
-    get qualifiersStage (): Stage | null {
-        return this.tournament?.stages.find(s => s.stageType === 0) || null;
+    selectedStage = 0;
+    selectedMappool = 0;
+
+    get stageList (): {
+        ID: number; 
+        name: string; 
+        order: number;
+    }[] {
+        const stages = this.tournament?.stages.map<{
+            ID: number; 
+            name: string; 
+            order: number;
+        }>(s => {
+            return {
+                ID: s.ID,
+                name: s.name,
+                order: s.order,
+            };
+        }) || [];
+
+        return stages;
+    }
+
+    @Watch("stageList", { immediate: true })
+    onstageListChanged (list: {ID: number; name: string}[]) {
+        if (list.length > 0)
+            this.selectedStage = list[0]?.ID || 0;
+    }
+
+    get stage (): Stage | null {
+        console.log(this.tournament?.stages.length);
+        console.log(this.tournament?.stages[0]);
+        console.log(this.tournament?.stages[-1]);
+        // console.log(this.tournament?.stages.forEach((s)=>{
+        //     console.log(s.ID);
+        // }));
+        return this.tournament?.stages.find(s => s.ID === this.selectedStage) || null;
+    }
+
+    @Watch("stage", { immediate: true })
+    onStageChanged (stage: Stage | null) {
+        if (stage)
+            this.selectedMappool = stage.mappool[0]?.ID || 0;
+    }
+
+    cycleStage (){
+        this.selectedStage;
     }
 }
 </script>
