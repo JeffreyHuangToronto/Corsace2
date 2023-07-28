@@ -33,14 +33,14 @@
                         <div class="stage_selector_buttons">
                             <div
                                 class="stage_selector_buttons__left"
-                                @click="selectedStage = selectedStage - 1"
+                                @click="selectedStage -= 1"
                             />
                             <div class="stage_selector_buttons__selected">
                                 {{ stage?.abbreviation }}
                             </div>
                             <a
                                 class="stage_selector_buttons__right"
-                                @click="selectedStage = selectedStage + 1"
+                                @click="selectedStage += 1"
                             />
                         </div>
                     </div>
@@ -150,13 +150,11 @@ export default class Mappool extends Vue {
     onstageListChanged (list: {ID: number; name: string}[]) {
         if (list.length > 0)
             this.selectedStage = list[0]?.ID || 0;
-        console.log(list.length);
+        console.log(list);
     }
 
     get stage (): Stage | null {
         console.log(this.tournament?.stages.length);
-        console.log(this.tournament?.stages[0]);
-        console.log(this.tournament?.stages[-1]);
         // console.log(this.tournament?.stages.forEach((s)=>{
         //     console.log(s.ID);
         // }));
@@ -169,11 +167,13 @@ export default class Mappool extends Vue {
             this.selectedMappool = stage.mappool[0]?.ID || 0;
     }
 
-    cycleStage (direction: number){
-        // if (){
-
-        // }
-    }
+    // cycleStage (direction: number){
+    //     let newStage = this.selectedStage + direction;
+    //     if (newStage > this.stageList.length - 1 || newStage < 1){
+    //         return;
+    //     }
+    //     this.selectedStage = newStage;
+    // }
 }
 </script>
 
