@@ -150,6 +150,7 @@ export default class Mappool extends Vue {
     onstageListChanged (list: {ID: number; name: string}[]) {
         if (list.length > 0)
             this.selectedStage = list[0]?.ID || 0;
+        console.log(list.length);
     }
 
     get stage (): Stage | null {
@@ -168,8 +169,10 @@ export default class Mappool extends Vue {
             this.selectedMappool = stage.mappool[0]?.ID || 0;
     }
 
-    cycleStage (){
-        this.selectedStage;
+    cycleStage (direction: number){
+        // if (){
+
+        // }
     }
 }
 </script>
